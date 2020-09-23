@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<title>Real Estate| TrackLand </title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
+    <!-- Jquery CDN -->
+     <script src="https://code.jquery.com/jquery-3.4.1.slim.js" integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous"></script>
+	 <style>
+		.center {
+		  margin: fit;
+		  width: 60%;
+		  padding: 10px;
+		}
+ body {
+  background-color:rgb(89, 114, 146);
+}
+label{
+color:white;
+}
+	</style>
+	</head>
+  <body>
+    <label for="lUid">Land UID:</label><br>
+    <input type="text" id="lUid" name="lUid">
+    <br><br>
+    <input type="submit" value="Submit" id="track">
+    <div class="center">
+		<p id="lUid"></p><br>
+		<p id="Name"></p><br>
+		<p id="OwnerAddr"></p><br>
+		<p id="Uid"></p><br>
+		<p id="Latitude"></p><br>
+		<p id="Longitude"></p><br>
+		<p id="Description"></p><br>
+		<p id="Size"></p><br>
+		
+	</div>
+
+    <script>
+        var contract;
+        $(document).ready (async function()
+        {
+          let web3=new Web3( new Web3.providers.HttpProvider("http://localhost:8545"));
+		  let availableAccounts = await web3.eth.getAccounts()
+		  let currentAccount = availableAccounts[2]
+          var address="0x8534Fa26a35ae7Eec5A451c2224eD0F88B6f89BE";
+          var abi=[
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "BuyerName",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_BuyerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_BuyerName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_BuyerUid",
+				"type": "string"
+			}
+		],
+		"name": "GetBuyerInfo",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "BuyerUid",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_ownerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_Name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_Uid",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_Latitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_Longitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_size",
+				"type": "string"
+			}
+		],
+		"name": "AddLand",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "LandInfo",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "Name",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "OwnerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "Uid",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Latitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Longitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Size",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "id",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landID",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_BuyerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_BuyerName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_BuyerUid",
+				"type": "string"
+			}
+		],
+		"name": "TransferOwnerShip",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landID",
+				"type": "uint256"
+			}
+		],
+		"name": "showLand",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "lands",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "Name",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "OwnerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "Uid",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Latitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Longitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Size",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getid",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	}
+]
+          contract= new web3.eth.Contract(abi,address);
+		  console.log(currentAccount);
+		  console.log(availableAccounts);
+		  $('#track').click(async function(){
+			const web3Instance = new Web3(ethereum);
+ 			var _lUid =  parseInt($('#lUid').val());
+			console.log(_lUid);
+			return  contract.methods.showLand(_lUid).call().then(function(a){	
+				document.getElementById("lUid").innerHTML = 'Land Uid ='+_lUid;
+				document.getElementById("Name").innerHTML = 'Name :'+ a[0];
+				document.getElementById("OwnerAddr").innerHTML = 'OwnerAddr :'+ a[1];
+				document.getElementById("Uid").innerHTML = 'Uid :'+ a[2];
+				document.getElementById("Latitude").innerHTML = 'Latitude :'+ a[3];
+				document.getElementById("Longitude").innerHTML = 'Longitude :'+ a[4];
+				document.getElementById("Description").innerHTML = 'Description :'+ a[5];
+				document.getElementById("size").innerHTML = 'Area :'+ a[6];
+		   })
+		   .catch(function(tx){
+	   		console.log(tx);
+			})
+		})
+	})
+		</script>
+		<a type="submit" class="btn btn-primary" href="./index.html"> Propled Home </a>
+    </body>
+</html>    

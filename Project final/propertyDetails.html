@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Real Estate| Seller Details </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      .center {
+        margin: fit;
+        width: 60%;
+       
+        padding: 10px;
+      }
+      .left{
+        margin:auto;
+        width:100%;
+        border: 3px solid #254679;
+        border:3px;
+      }
+      table, th, td {
+           border: 3px solid black;
+      }
+  body {
+  background-image: url('main image.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+label,th,tr{
+color:white;
+}
+      
+    </style> 
+  </head>
+  <body>
+    <br>
+    <h1 style="color:white;">Enter details of property to be sold : </h1>
+    <br>
+    <br>
+    <div class="center">
+    <form id="propertyDetails">
+        <label for="sellerName">Seller's Name:</label><br>
+        <input type="text" id="sellerName" name="sellerName"><br>
+        <label for="contactNo">Contact No:</label><br>
+        <input type="text" id="contactNo" name="contactNo"><br>
+        <label for="latitude">Latitude:</label><br>
+        <input type="text" id="latitude" name="latitude"><br>
+        <label for="longitude">Longitude:</label><br>
+        <input type="text" id="longitude" name="longitude"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+    <table id='targetTbl'>
+      <tbody>
+          <tr><th>Seller's Name    </th><th>Contact No     </th><th>Latitude    </th><th>Longitude    </th></tr>
+      </tbody>
+  </table>
+  </div>
+    <script src="./propertyDetails.js"></script>
+    <a type="submit" class="btn btn-primary" href="./index.html"> Propled Home </a>
+</body>
+</html>

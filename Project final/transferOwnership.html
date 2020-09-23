@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Real Estate| Transfer OwnerShip </title>
+    <style>
+      .center {
+        margin: fit;
+        width: 60%;
+        padding: 10px;
+      }
+      table, th, td {
+           border: 3px solid black;
+           color:white;
+      }
+    body {
+  background-image: url('main image.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+label,h1{
+color:white;
+}
+    </style> 
+  </head>
+  <body>
+    <br><br>
+    <h1>Enter the details of property and the buyer :</h1>
+    <br><br>
+    <div class="center">
+        <form id="transferOwnership">
+            <label for="sellerAddr">Seller's Address:</label><br>
+            <input type="text" id="sellerAddr" name="sellerAddr"><br>
+            <label for="lUid">Land UID:</label><br>
+            <input type="text" id="lUid" name="lUid"><br>
+            <label for="buyerAddr">Buyer's Address:</label><br>
+            <input type="text" id="buyerAddr" name="buyerAddr"><br>
+            <label for="buyerName">Buyer's Name:</label><br>
+            <input type="text" id="buyerName" name="buyerName"><br>
+            <label for="buyerUid">Buyer's UID:</label><br>
+            <input type="text" id="buyerUid" name="buyerUid"><br><br>
+            <input type="submit" value="Submit"id="transact">
+        </form>
+      </div>
+      <br><br>
+        <script>
+        
+          $(document).ready(async function()
+          {
+            let web3=new Web3( new Web3.providers.HttpProvider("http://localhost:8545"));
+            let availableAccounts= await web3.eth.getAccounts();
+			let currentAccount =availableAccounts[2];
+            var address="0x8534Fa26a35ae7Eec5A451c2224eD0F88B6f89BE";
+            var abi=[
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "BuyerName",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_BuyerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_BuyerName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_BuyerUid",
+				"type": "string"
+			}
+		],
+		"name": "GetBuyerInfo",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "BuyerUid",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_ownerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_Name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_Uid",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_Latitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_Longitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_size",
+				"type": "string"
+			}
+		],
+		"name": "AddLand",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "LandInfo",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "Name",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "OwnerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "Uid",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Latitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Longitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Size",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "id",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landID",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_BuyerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_BuyerName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_BuyerUid",
+				"type": "string"
+			}
+		],
+		"name": "TransferOwnerShip",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landID",
+				"type": "uint256"
+			}
+		],
+		"name": "showLand",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "lands",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "Name",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "OwnerAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "Uid",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Latitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Longitude",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "Size",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getid",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	}
+]
+            contract = new  web3.eth.Contract(abi,address);
+            console.log(currentAccount);
+			console.log(availableAccounts);
+            $('#transact').click(async function(){
+            const web3Instance = new Web3(ethereum);
+            var _landId = parseInt($('#lUid').val());
+            var _buyerAddr= $('#buyerAddr').val();
+            var _buyerName= $('#buyerName').val();
+            var _buyerUid= $('#buyerUid').val();
+            console.log(_landId,_buyerAddr);
+            await web3.eth.getAccounts().then(function(accounts){
+            console.log(accounts);
+            var acc=accounts[0];
+            console.log(acc);
+            //call contract function to store data
+            return contract.methods.TransferOwnerShip(_landId, _buyerAddr, _buyerName,_buyerUid).send({from:acc,gas:5000000})}).then(function(tx,a){
+            //transaction hash
+		        console.log(tx);
+
+            }).
+			      catch(function(tx){
+            console.log(tx);
+            })
+            })
+          })
+          </script>  
+          <div class="container">
+          <table id='targetTbl'>
+            <tbody>
+              <tr><th>Seller's Address     </th><th>Land UID    </th><th>Buyer's Address    </th><th>Buyer's Name    </th><th>Buyer's UID    </th></tr>
+            </tbody>
+		  </table>
+		  
+
+
+
+          </div>
+        <script src="./transferOwnership.js"></script>
+        <a type="submit" class="btn btn-primary" href="./index.html"> Propled Home </a>
+  </body>
+</html>

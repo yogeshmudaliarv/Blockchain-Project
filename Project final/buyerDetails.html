@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Real Estate|Buyer Details </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      .center {
+        margin: fit;
+        width: 60%;
+        padding: 10px;
+       
+      }
+      table, th, td {
+         border: 3px solid black;
+color: white;
+		}
+  body {
+  background-image: url('main image.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+label,h2{
+color:white;
+}
+		
+	</style> 
+  </head>
+  <body>
+    <br>
+    <h2 text-align:center>Enter your personal details:</h2>
+    <br>
+    <br>
+    <div class="center">
+        <form id="buyerDetails">
+            <label for="buyerAddr">Buyer's Address:</label><br>
+            <input type="text" id="buyerAddr" name="buyerAddr"><br>
+            <label for="buyerName">Buyer's Name:</label><br>
+            <input type="text" id="buyerName" name="buyerName"><br>
+            <label for="buyerUid">Buyer's UID:</label><br>
+            <input type="text" id="buyerUid" name="buyerUid"><br>
+			      <label for="buyerContactNo">Buyer's Contact no.:</label><br>
+            <input type="text" id="buyerContactNo" name="buyerContactNo"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <table id='targetTbl'>
+          <tbody>
+              <tr><th>Buyer's Address  </th><th>Buyer's Name  </th><th>Buyer's UID  </th><th>Buyer's Contact no.  </th></tr>
+          </tbody>
+      </table>
+      </div>
+      <a type="submit" class="btn btn-primary" href="./index.html"> Propled Home </a>
+        <script src="./buyerDetails.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+pragma solidity ^0.5.11;
+
+contract RealEstate{
+    
+    struct Land{
+        string Name;  //Land owner name
+        address OwnerAddr; //Ethereum address
+        string Uid; // Aadhar number
+        string Latitude;
+        string Longitude;
+        string Description;
+        string Size;
+        
+        
+    }
+    
+    address BuyerAddr;
+    string public BuyerName;
+    string public  BuyerUid;
+    
+    address public owner;
+    uint256 public id;
+    
+  
+    constructor() public
+    {
+        owner = msg.sender;
+        id = 0;
+    }
+    
+     modifier isOwner
+    {
+        require(msg.sender == owner);
+        _;
+    }
+    
+    
+    mapping(uint256 => Land)public LandInfo;
+     Land[] public lands;
+    
+    //For Adding new Land Details
+     function AddLand(address  _ownerAddr,string memory _Name,string memory  _Uid,string memory  _Latitude,string memory  _Longitude,string memory _description,string memory _size)  public isOwner
+    {
+        LandInfo[++id].OwnerAddr=_ownerAddr;
+        LandInfo[id].Name = _Name;
+        LandInfo[id].Uid = _Uid;
+        LandInfo[id].Latitude =_Latitude;
+        LandInfo[id].Longitude = _Longitude;
+        LandInfo[id].Description = _description;
+        LandInfo[id].Size = _size;
+      
+    }
+    //get id
+    function getid() public view returns(uint256){
+        return id;
+    }
+    
+    
+    //Show Land Details
+    
+    function showLand(uint _landID) view public returns (string memory,address,string memory,string memory,string memory,string memory,string memory) {
+      return ( LandInfo[_landID].Name,
+               LandInfo[_landID].OwnerAddr,
+               LandInfo[_landID].Uid,
+               LandInfo[_landID].Latitude,
+               LandInfo[_landID].Longitude,
+               LandInfo[_landID].Description,
+               LandInfo[_landID].Size
+             );
+    }
+    
+    //Get the Buyer Details
+    
+     function GetBuyerInfo(address _BuyerAddr,string memory _BuyerName,string memory _BuyerUid) public  {
+        BuyerAddr=_BuyerAddr;
+        BuyerName = _BuyerName;
+        BuyerUid = _BuyerUid;
+    }
+
+
+    
+    //Transfer the ownership
+    
+    function TransferOwnerShip(uint _landID,address _BuyerAddr,string memory _BuyerName,string memory _BuyerUid) public{
+         LandInfo[_landID].OwnerAddr=_BuyerAddr;
+        LandInfo[_landID].Name = _BuyerName;
+        LandInfo[_landID].Uid =_BuyerUid;
+    }
+
+}
+
+
+        
